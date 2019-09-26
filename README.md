@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/cgauge/Flask-AWSCognito.svg?branch=master)](https://travis-ci.org/cgauge/Flask-AWSCognito)
+
 # AWS Cognito for authentication in Flask
 
 Documentation https://flask-awscognito.readthedocs.io
