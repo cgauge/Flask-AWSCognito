@@ -6,6 +6,11 @@ User authentication with AWS Cognito for Flask
 """
 from setuptools import setup
 
+tests_require = [
+        'pytest',
+        'pytest-mock',
+        'pytest-flask'
+        ]
 
 setup(
     name='Flask-AWSCognito',
@@ -26,11 +31,10 @@ setup(
         'python-jose',
         'requests'
     ],
-    tests_require=[
-        'pytest',
-        'pytest-mock',
-        'pytest-flask'
-        ],
+    tests_require=[tests_require],
+    extras_require={
+        'tests': tests_require
+    },
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
