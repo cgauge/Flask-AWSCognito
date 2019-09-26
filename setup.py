@@ -23,7 +23,7 @@ setup(
     install_requires=[
         'Flask',
         'boto3',
-        'jose',
+        'python-jose',
         'requests'
     ],
     tests_require=[
