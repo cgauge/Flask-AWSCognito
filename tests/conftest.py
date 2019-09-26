@@ -1,6 +1,6 @@
 import os
 import pytest
-import flask
+from flask import Flask, jsonify
 from flask_awscognito.exceptions import TokenVerifyError
 
 
@@ -63,7 +63,7 @@ def jwks_endpoint_request(mocker, jwks):
 
 @pytest.fixture
 def app(user_pool_id, user_pool_client_id):
-    test_app = flask.Flask(__name__)
+    test_app = Flask(__name__)
 
     test_app.config['AWS_COGNITO_USER_POOL_ID'] = 'eu-west-1_Drvd8r4TM'
     test_app.config['AWS_COGNITO_USER_POOL_CLIENT_ID'] = '545isk1een1lvilb9en643g3vd'
@@ -91,5 +91,5 @@ def verify(token):
 @pytest.fixture
 def test_view():
     def view():
-        return flask.jsonify({'data': 123})
+        return jsonify({'data': 123})
     return view
