@@ -1,5 +1,7 @@
 # AWS Cognito for authentication in Flask
 
+Documentation https://flask-awscognito.readthedocs.io
+
 ## Example App
 ```python
 from flask import Flask, redirect, request, jsonify
