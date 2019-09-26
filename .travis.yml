@@ -7,7 +7,7 @@ python:
   - "3.8-dev"
 
 install:
-  - python setup.py test
+  - python3 setup.py test
 
 script:
-  - pytest
+  - pytest tests
