@@ -47,4 +47,3 @@ if __name__ == '__main__':
 - client credentials flow for machine-to-machine interactions
 - create user pool client with secret (token endpoint will need a header)
 - logout
-- sphinx + read the docs

@@ -12,15 +12,20 @@ tests_require = [
         'pytest-flask'
         ]
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+
 setup(
     name='Flask-AWSCognito',
     version='1.0',
     url='https://github.com/cgauge/Flask-AWSCognito/',
-    license='BSD',
+    license='MIT',
     author='CustomerGauge',
-    author_email='tech@customergauge.com',
+    author_email='python@customergauge.com',
     description='Authenticate users with AWS Cognito',
-    long_description=__doc__,
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     py_modules=['flask_awscognito'],
     zip_safe=False,
     include_package_data=True,
@@ -35,12 +40,13 @@ setup(
     extras_require={
         'tests': tests_require
     },
+    python_requires='>=3.6',
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ]
