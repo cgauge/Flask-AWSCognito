@@ -14,7 +14,7 @@ Diagram
 
 Sign in
 -------
-A user open AWS Cognito UI for:
+A user opens AWS Cognito UI for:
  - sign up
  - registration confirmation (confirmation code is sent user's email address)
  - password reset
@@ -41,8 +41,7 @@ Endpoint's example code:
 
     @app.route('/aws_cognito_redirect')
     def aws_cognito_redirect():
-        code = request.args.get('code')
-        access_token = aws_auth.get_access_token(code)
+        access_token = aws_auth.get_access_token(request.args)
         return jsonify({'access_token': access_token})
 
 
@@ -57,10 +56,11 @@ that requires authorization:
     @app.route('/')
     @aws_auth.authentication_required
     def index():
-        claims = aws_auth.claims
+        claims = aws_auth.claims # or g.cognito_claims
         return jsonify({'claims': claims})
 
-Authenticated user data is available through plugins attribute `claims`
+Authenticated user data is available through plugins attribute `claims`. Claims are also
+available through the `g` object attribute `cognito_claims`
 
 
 Client

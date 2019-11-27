@@ -59,10 +59,14 @@ The following  CloudFormation template will create
 Domain
 ------
 
-The template doesn't create a Domain (not supported as of October 2019)
+The template doesn't create a Domain (not supported by CLoudFormation as of December 2019)
 so it should be created manually from console or through API calls.
 
 .. image:: https://raw.githubusercontent.com/cgauge/Flask-AWSCognito/master/docs/img/cognito_domain.png
+
+Both options - "Amazon Cognito domain" and "Your own domain" are supported. Don't forget to pass it
+to Flask app config.
+
 
 Redirect URL
 ------------
@@ -74,8 +78,8 @@ will be redirected to after successful sign in (see **Usage**).
 ID to pass to Flask
 --------------------
 
-After resources are created we need User Pool ID and User Pool Client ID
-to configure Flask:
+After resources are created we need User Pool ID, User Pool Client ID and User Pool Client Secret
+(not shown on the screenshots) to configure Flask:
 
 .. image:: https://raw.githubusercontent.com/cgauge/Flask-AWSCognito/master/docs/img/poolid.png
 
