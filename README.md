@@ -11,8 +11,11 @@ from flask import Flask, redirect, request, jsonify
 from flask_awscognito import AWSCognitoAuthentication
 app = Flask(__name__)
 
-app.config['AWS_COGNITO_USER_POOL_ID'] = 'eu-west-1_Drvd8r4TM'
-app.config['AWS_COGNITO_USER_POOL_CLIENT_ID'] = '545isk1een1lvilb9en643g3vd'
+app.config['AWS_DEFAULT_REGION'] = 'eu-west-1'
+app.config['AWS_COGNITO_DOMAIN'] = 'domain.com'
+app.config['AWS_COGNITO_USER_POOL_ID'] = 'eu-west-1_XXX'
+app.config['AWS_COGNITO_USER_POOL_CLIENT_ID'] = 'YYY'
+app.config['AWS_COGNITO_USER_POOL_CLIENT_SECRET'] = 'ZZZZ'
 app.config['AWS_COGNITO_REDIRECT_URL'] = 'http://localhost:5000/aws_cognito_redirect'
 
 
@@ -22,7 +25,7 @@ aws_auth = AWSCognitoAuthentication(app)
 @app.route('/')
 @aws_auth.authentication_required
 def index():
-    claims = aws_auth.claims
+    claims = aws_auth.claims # also available through g.cognito_claims
     return jsonify({'claims': claims})
 
 
@@ -41,9 +44,3 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 ```
-
-## ToDo
-- token refresh
-- client credentials flow for machine-to-machine interactions
-- create user pool client with secret (token endpoint will need a header)
-- logout
