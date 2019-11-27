@@ -4,7 +4,7 @@ Flask-AWSCognito
 
 User authentication with AWS Cognito for Flask
 """
-from setuptools import setup
+from setuptools import setup, find_packages
 
 tests_require = ["pytest", "pytest-mock", "pytest-flask"]
 
@@ -14,7 +14,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="Flask-AWSCognito",
-    version="1.1",
+    version="1.2",
     url="https://github.com/cgauge/Flask-AWSCognito/",
     license="MIT",
     author="CustomerGauge",
@@ -23,6 +23,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     py_modules=["flask_awscognito"],
+    packages=find_packages(),
     zip_safe=False,
     include_package_data=True,
     platforms="any",
