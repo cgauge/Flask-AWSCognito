@@ -21,4 +21,4 @@ def cognito_service_factory(
 
 
 def token_service_factory(user_pool_id, user_pool_client_id, region, _jwk_keys):
-    return TokenService(user_pool_id, user_pool_client_id, region, _jwk_keys)
+    return TokenService(user_pool_id, user_pool_client_id, region, _jwk_keys=_jwk_keys)
