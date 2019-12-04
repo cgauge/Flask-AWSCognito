@@ -97,15 +97,15 @@ class AWSCognitoAuthentication:
     def authentication_required(self, view):
         @wraps(view)
         def decorated(*args, **kwargs):
-
-            access_token = extract_access_token(request.headers)
-            try:
-                self.token_service.verify(access_token)
-                self.claims = self.token_service.claims
-                g.cognito_claims = self.claims
-            except TokenVerifyError as e:
-                _ = request.data
-                abort(make_response(jsonify(message=str(e)), 401))
+            if not self.app.config.get("TESTING"):
+                access_token = extract_access_token(request.headers)
+                try:
+                    self.token_service.verify(access_token)
+                    self.claims = self.token_service.claims
+                    g.cognito_claims = self.claims
+                except TokenVerifyError as e:
+                    _ = request.data
+                    abort(make_response(jsonify(message=str(e)), 401))
 
             return view(*args, **kwargs)
 
