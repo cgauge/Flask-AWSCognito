@@ -48,6 +48,7 @@ class AWSCognitoAuthentication:
         self.redirect_url = app.config[CONFIG_KEY_REDIRECT_URL]
         self.region = app.config[CONFIG_KEY_REGION]
         self.domain = app.config[CONFIG_KEY_DOMAIN]
+        self.app = app
 
     @property
     def token_service(self):
