@@ -84,6 +84,9 @@ class AWSCognitoAuthentication:
         access_token = self.cognito_service.exchange_code_for_token(code)
         return access_token
 
+    def get_user_info(self, access_token):
+        return self.cognito_service.get_user_info(access_token)
+
     def authentication_required(self, view):
         @wraps(view)
         def decorated(*args, **kwargs):

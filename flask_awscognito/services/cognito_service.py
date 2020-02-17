@@ -66,3 +66,15 @@ class CognitoService:
             )
         access_token = response_json["access_token"]
         return access_token
+
+    def get_user_info(self, access_token, requests_client=None):
+        user_url = f"{self.domain}/oauth2/userInfo"
+        header = {"Authorization": f"Bearer {access_token}"}
+        try:
+            if not requests_client:
+                requests_client = requests.post
+            response = requests_client(user_url, headers=header)
+            response_json = response.json()
+        except requests.exceptions.RequestException as e:
+            raise FlaskAWSCognitoError(str(e)) from e
+        return response_json
