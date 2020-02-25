@@ -35,6 +35,15 @@ def domain():
 def region():
     return "eu-west-1"
 
+@pytest.fixture
+def test_access_token():
+    return "test_access_token"
+
+
+_test_user = {"username": "test_username", "name": "test_name"}
+@pytest.fixture
+def test_user():
+    return _test_user
 
 @pytest.fixture
 def token_endpoint_request(mocker):
@@ -43,6 +52,12 @@ def token_endpoint_request(mocker):
     request = mocker.Mock(return_value=response)
     return request
 
+@pytest.fixture
+def user_endpoint_request(mocker):
+    response = mocker.Mock()
+    response.json = mocker.Mock(return_value=_test_user)
+    request = mocker.Mock(return_value=response)
+    return request
 
 @pytest.fixture
 def jwks():

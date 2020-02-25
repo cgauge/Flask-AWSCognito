@@ -18,6 +18,20 @@ def test_get_access_token(
         plugin.get_access_token(req_args)
         plugin.cognito_service.exchange_code_for_token.assert_called_with("code")
 
+@pytest.mark.usefixtures("set_env")
+def test_get_user_info(
+    app, cognito_service_test_factory, token_service_test_factory, test_access_token
+):
+    plugin = AWSCognitoAuthentication(
+        app,
+        _token_service_factory=token_service_test_factory,
+        _cognito_service_factory=cognito_service_test_factory,
+    )
+    with app.app_context():
+        assert plugin.token_service
+        assert plugin.cognito_service
+        plugin.get_user_info(test_access_token)
+        plugin.cognito_service.get_user_info.assert_called_with(test_access_token)
 
 @pytest.mark.usefixtures("set_env")
 def test_no_auth(

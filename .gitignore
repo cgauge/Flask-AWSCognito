@@ -84,10 +84,12 @@ celerybeat-schedule
 # Environments
 .env
 .venv
+bin/
 env/
 venv/
 ENV/
 env.bak/
+include/
 venv.bak/
 
 # Spyder project settings
@@ -96,6 +98,9 @@ venv.bak/
 
 # Rope project settings
 .ropeproject
+
+# vscode settings
+.vscode
 
 # mkdocs documentation
 /site
