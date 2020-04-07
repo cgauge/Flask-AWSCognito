@@ -29,7 +29,7 @@ class CognitoService:
         quoted_redirect_url = quote(self.redirect_url)
         state = get_state(self.user_pool_id, self.user_pool_client_id)
         full_url = (
-            f"{self.domain}/authorize"
+            f"{self.domain}/oauth2/authorize"
             f"?response_type=code"
             f"&client_id={self.user_pool_client_id}"
             f"&redirect_uri={quoted_redirect_url}"
