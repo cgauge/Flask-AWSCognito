@@ -77,9 +77,9 @@ class AWSCognitoAuthentication:
 
     def get_access_token(self, request_args):
         code = request_args.get("code")
-        state = request_args.get("state")
+        state = request_args.get("state") # may not be present in the request from Cognito Hosted UI
         expected_state = get_state(self.user_pool_id, self.user_pool_client_id)
-        if state != expected_state:
+        if state and state != expected_state:
             raise FlaskAWSCognitoError("State for CSRF is not correct ")
         access_token = self.cognito_service.exchange_code_for_token(code)
         return access_token
