@@ -79,12 +79,6 @@ class TokenService:
         if current_time > claims["exp"]:
             raise TokenVerifyError("Token is expired")  # probably another exception
 
-    def _check_audience(self, claims):
-        # and the Audience  (use claims['client_id'] if verifying an access token)
-        audience = claims["aud"] if "aud" in claims else claims["client_id"]
-        if audience != self.user_pool_client_id:
-            raise TokenVerifyError("Token was not issued for this audience")
-
     def verify(self, token, current_time=None):
         """ https://github.com/awslabs/aws-support-tools/blob/master/Cognito/decode-verify-jwt/decode-verify-jwt.py """
         if not token:
@@ -96,6 +90,5 @@ class TokenService:
 
         claims = self._extract_claims(token)
         self._check_expiration(claims, current_time)
-        self._check_audience(claims)
 
         self.claims = claims
