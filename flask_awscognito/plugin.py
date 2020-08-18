@@ -1,7 +1,7 @@
 from functools import wraps
 
 from flask import _app_ctx_stack, abort, request, make_response, jsonify, g
-from flask_awscognito.utils import extract_access_token, get_state
+from flask_awscognito.utils import extract_access_token, get_state, create_state, state_valid
 from flask_awscognito.services import cognito_service_factory, token_service_factory
 from flask_awscognito.exceptions import FlaskAWSCognitoError, TokenVerifyError
 from flask_awscognito.constants import (
@@ -20,10 +20,12 @@ class AWSCognitoAuthentication:
     def __init__(
         self,
         app=None,
+        client_state=None,
         _token_service_factory=token_service_factory,
         _cognito_service_factory=cognito_service_factory,
     ):
         self.app = app
+        self.client_state = client_state
         self.user_pool_id = None
         self.user_pool_client_id = None
         self.user_pool_client_secret = None
@@ -65,6 +67,7 @@ class AWSCognitoAuthentication:
                     self.user_pool_client_id,
                     self.user_pool_client_secret,
                     self.redirect_url,
+                    self.client_state,
                     self.region,
                     self.domain,
                 )
@@ -78,8 +81,7 @@ class AWSCognitoAuthentication:
     def get_access_token(self, request_args):
         code = request_args.get("code")
         state = request_args.get("state")
-        expected_state = get_state(self.user_pool_id, self.user_pool_client_id)
-        if state != expected_state:
+        if not state_valid(self.user_pool_id, self.user_pool_client_id, state):
             raise FlaskAWSCognitoError("State for CSRF is not correct ")
         access_token = self.cognito_service.exchange_code_for_token(code)
         return access_token

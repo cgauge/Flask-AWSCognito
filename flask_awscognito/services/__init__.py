@@ -7,6 +7,7 @@ def cognito_service_factory(
     user_pool_client_id,
     user_pool_client_secret,
     redirect_url,
+    client_state,
     region,
     domain,
 ):
@@ -15,6 +16,7 @@ def cognito_service_factory(
         user_pool_client_id,
         user_pool_client_secret,
         redirect_url,
+        client_state,
         region,
         domain,
     )
