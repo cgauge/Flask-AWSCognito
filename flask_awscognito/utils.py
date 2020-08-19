@@ -1,5 +1,6 @@
 from flask_awscognito.constants import HTTP_HEADER
 from hashlib import md5
+from urllib.parse import quote
 
 def extract_access_token(request_headers):
     access_token = None
@@ -10,7 +11,7 @@ def extract_access_token(request_headers):
 
 def create_state(user_pool_id, user_pool_client_id, client_state):
     result = get_state(user_pool_id=user_pool_id, user_pool_client_id=user_pool_client_id)
-    return result + "--%s" % client_state
+    return result + "--%s" % quote(client_state)
 
 def state_valid(user_pool_id, user_pool_client_id, state):
     hsh = get_state(user_pool_id, user_pool_client_id)

@@ -29,7 +29,7 @@ class CognitoService:
 
     def get_sign_in_url(self):
         quoted_redirect_url = quote(self.redirect_url)
-        state = create_state(self.user_pool_id, self.user_pool_client_id, quote(str(self.client_state)))
+        state = create_state(self.user_pool_id, self.user_pool_client_id, str(self.client_state))
         full_url = (
             f"{self.domain}/login"
             f"?response_type=code"
