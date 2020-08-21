@@ -23,6 +23,8 @@ class AWSCognitoAuthentication:
         client_state=None,
         _token_service_factory=token_service_factory,
         _cognito_service_factory=cognito_service_factory,
+        _jwk_keys=None,
+        _access_token=None,
     ):
         self.app = app
         self.client_state = client_state
@@ -35,6 +37,9 @@ class AWSCognitoAuthentication:
         self.claims = None
         self.token_service_factory = _token_service_factory
         self.cognito_service_factory = _cognito_service_factory
+        self._jwk_keys = _jwk_keys
+        self._access_token = _access_token
+
         if app is not None:
             self.init_app(app)
 
@@ -45,6 +50,7 @@ class AWSCognitoAuthentication:
         self.redirect_url = app.config[CONFIG_KEY_REDIRECT_URL]
         self.region = app.config[CONFIG_KEY_REGION]
         self.domain = app.config[CONFIG_KEY_DOMAIN]
+        self.app = app
 
     @property
     def token_service(self):
@@ -52,7 +58,10 @@ class AWSCognitoAuthentication:
         if ctx is not None:
             if not hasattr(ctx, CONTEXT_KEY_TOKEN_SERVICE):
                 token_service = self.token_service_factory(
-                    self.user_pool_id, self.user_pool_client_id, self.region
+                    self.user_pool_id,
+                    self.user_pool_client_id,
+                    self.region,
+                    _jwk_keys=self._jwk_keys,
                 )
                 setattr(ctx, CONTEXT_KEY_TOKEN_SERVICE, token_service)
             return getattr(ctx, CONTEXT_KEY_TOKEN_SERVICE)
@@ -79,6 +88,8 @@ class AWSCognitoAuthentication:
         return sign_in_url
 
     def get_access_token(self, request_args):
+        if self._access_token:
+            return self._access_token
         code = request_args.get("code")
         state = request_args.get("state")
         if not state_valid(self.user_pool_id, self.user_pool_client_id, state):
@@ -92,15 +103,15 @@ class AWSCognitoAuthentication:
     def authentication_required(self, view):
         @wraps(view)
         def decorated(*args, **kwargs):
-
-            access_token = extract_access_token(request.headers)
-            try:
-                self.token_service.verify(access_token)
-                self.claims = self.token_service.claims
-                g.cognito_claims = self.claims
-            except TokenVerifyError as e:
-                _ = request.data
-                abort(make_response(jsonify(message=str(e)), 401))
+            if not self.app.config.get("TESTING"):
+                access_token = extract_access_token(request.headers)
+                try:
+                    self.token_service.verify(access_token)
+                    self.claims = self.token_service.claims
+                    g.cognito_claims = self.claims
+                except TokenVerifyError as e:
+                    _ = request.data
+                    abort(make_response(jsonify(message=str(e)), 401))
 
             return view(*args, **kwargs)
 
