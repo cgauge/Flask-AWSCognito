@@ -13,6 +13,7 @@ from flask_awscognito.constants import (
     CONFIG_KEY_DOMAIN,
     CONFIG_KEY_REGION,
     CONFIG_KEY_POOL_CLIENT_SECRET,
+    CONFIG_KEY_SCOPE
 )
 
 
@@ -31,6 +32,7 @@ class AWSCognitoAuthentication:
         self.region = None
         self.domain = None
         self.claims = None
+        self.scope = None
         self.token_service_factory = _token_service_factory
         self.cognito_service_factory = _cognito_service_factory
         if app is not None:
@@ -43,6 +45,7 @@ class AWSCognitoAuthentication:
         self.redirect_url = app.config[CONFIG_KEY_REDIRECT_URL]
         self.region = app.config[CONFIG_KEY_REGION]
         self.domain = app.config[CONFIG_KEY_DOMAIN]
+        self.scope = app.config[CONFIG_KEY_SCOPE]
 
     @property
     def token_service(self):
@@ -67,6 +70,7 @@ class AWSCognitoAuthentication:
                     self.redirect_url,
                     self.region,
                     self.domain,
+                    self.scope
                 )
                 setattr(ctx, CONTEXT_KEY_COGNITO_SERVICE, cognito_service)
             return getattr(ctx, CONTEXT_KEY_COGNITO_SERVICE)

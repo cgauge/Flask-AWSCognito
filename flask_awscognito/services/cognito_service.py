@@ -14,12 +14,14 @@ class CognitoService:
         redirect_url,
         region,
         domain,
+        scope
     ):
         self.user_pool_id = user_pool_id
         self.user_pool_client_id = user_pool_client_id
         self.user_pool_client_secret = user_pool_client_secret
         self.redirect_url = redirect_url
         self.region = region
+        self.scope = scope
         if domain.startswith("https://"):
             self.domain = domain
         else:
@@ -34,6 +36,7 @@ class CognitoService:
             f"&client_id={self.user_pool_client_id}"
             f"&redirect_uri={quoted_redirect_url}"
             f"&state={state}"
+            f"&scope={self.scope}"
         )
         return full_url
 

@@ -9,6 +9,7 @@ def cognito_service_factory(
     redirect_url,
     region,
     domain,
+    scope
 ):
     return CognitoService(
         user_pool_id,
@@ -17,6 +18,7 @@ def cognito_service_factory(
         redirect_url,
         region,
         domain,
+        scope
     )
 
 
