@@ -14,12 +14,14 @@ class CognitoService:
         redirect_url,
         region,
         domain,
+        scope
     ):
         self.user_pool_id = user_pool_id
         self.user_pool_client_id = user_pool_client_id
         self.user_pool_client_secret = user_pool_client_secret
         self.redirect_url = redirect_url
         self.region = region
+        self.scope = scope
         if domain.startswith("https://"):
             self.domain = domain
         else:
@@ -34,6 +36,7 @@ class CognitoService:
             f"&client_id={self.user_pool_client_id}"
             f"&redirect_uri={quoted_redirect_url}"
             f"&state={state}"
+            f"&scope={self.scope}"
         )
         return full_url
 
@@ -66,3 +69,15 @@ class CognitoService:
             )
         access_token = response_json["access_token"]
         return access_token
+
+    def get_user_info(self, access_token, requests_client=None):
+        user_url = f"{self.domain}/oauth2/userInfo"
+        header = {"Authorization": f"Bearer {access_token}"}
+        try:
+            if not requests_client:
+                requests_client = requests.post
+            response = requests_client(user_url, headers=header)
+            response_json = response.json()
+        except requests.exceptions.RequestException as e:
+            raise FlaskAWSCognitoError(str(e)) from e
+        return response_json

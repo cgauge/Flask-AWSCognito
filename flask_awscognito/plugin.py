@@ -13,6 +13,7 @@ from flask_awscognito.constants import (
     CONFIG_KEY_DOMAIN,
     CONFIG_KEY_REGION,
     CONFIG_KEY_POOL_CLIENT_SECRET,
+    CONFIG_KEY_SCOPE
 )
 
 
@@ -33,6 +34,7 @@ class AWSCognitoAuthentication:
         self.region = None
         self.domain = None
         self.claims = None
+        self.scope = None
         self.token_service_factory = _token_service_factory
         self.cognito_service_factory = _cognito_service_factory
         self._jwk_keys = _jwk_keys
@@ -48,6 +50,7 @@ class AWSCognitoAuthentication:
         self.redirect_url = app.config[CONFIG_KEY_REDIRECT_URL]
         self.region = app.config[CONFIG_KEY_REGION]
         self.domain = app.config[CONFIG_KEY_DOMAIN]
+        self.scope = app.config[CONFIG_KEY_SCOPE]
         self.app = app
 
     @property
@@ -76,6 +79,7 @@ class AWSCognitoAuthentication:
                     self.redirect_url,
                     self.region,
                     self.domain,
+                    self.scope
                 )
                 setattr(ctx, CONTEXT_KEY_COGNITO_SERVICE, cognito_service)
             return getattr(ctx, CONTEXT_KEY_COGNITO_SERVICE)
@@ -94,6 +98,9 @@ class AWSCognitoAuthentication:
             raise FlaskAWSCognitoError("State for CSRF is not correct ")
         access_token = self.cognito_service.exchange_code_for_token(code)
         return access_token
+
+    def get_user_info(self, access_token):
+        return self.cognito_service.get_user_info(access_token)
 
     def authentication_required(self, view):
         @wraps(view)

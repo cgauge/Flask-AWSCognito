@@ -60,3 +60,21 @@ def test_exchange_code_for_token(
         code="test_code", requests_client=token_endpoint_request
     )
     assert token == "test_access_token"
+
+@pytest.mark.usefixtures("set_env")
+def test_get_user_info(
+    user_pool_id, user_pool_client_id, user_pool_client_secret, region, domain, \
+    user_endpoint_request, \
+    test_access_token, \
+    test_user
+):
+    cognito = CognitoService(
+        user_pool_id,
+        user_pool_client_id,
+        user_pool_client_secret,
+        "http://redirect/url",
+        region,
+        domain,
+    )
+    user = cognito.get_user_info(access_token=test_access_token, requests_client=user_endpoint_request)
+    assert all(v == user[k] for k, v in test_user.items()) and len(user) == len(test_user)
