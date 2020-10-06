@@ -14,7 +14,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="Flask-AWSCognito",
-    version="1.3.2",
+    version="1.3.3",
     url="https://github.com/cgauge/Flask-AWSCognito/",
     license="MIT",
     author="CustomerGauge",
@@ -30,7 +30,7 @@ setup(
     install_requires=["Flask", "python-jose", "requests"],
     tests_require=[tests_require],
     extras_require={"tests": tests_require},
-    python_requires=">=3.6",
+    python_requires=">=3.7",
     classifiers=[
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
