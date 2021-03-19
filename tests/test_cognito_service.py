@@ -12,6 +12,7 @@ def test_base_url(
         user_pool_client_id,
         user_pool_client_secret,
         "redirect",
+        "client_state",
         region,
         domain,
     )
@@ -27,6 +28,7 @@ def test_sign_in_url(
         user_pool_client_id,
         user_pool_client_secret,
         "http://redirect/url",
+        "client_state",
         region,
         domain,
     )
@@ -35,7 +37,7 @@ def test_sign_in_url(
         "/login?response_type=code&"
         "client_id=545isk1een1lvilb9en643g3vd&"
         "redirect_uri=http%3A//redirect/url&"
-        "state=dc0de448b88af41d1cd06387ac2d5102"
+        "state=dc0de448b88af41d1cd06387ac2d5102--client_state"
     )
 
 
@@ -53,6 +55,7 @@ def test_exchange_code_for_token(
         user_pool_client_id,
         user_pool_client_secret,
         "http://redirect/url",
+        "client_state",
         region,
         domain,
     )
@@ -73,6 +76,7 @@ def test_get_user_info(
         user_pool_client_id,
         user_pool_client_secret,
         "http://redirect/url",
+        "client_state",
         region,
         domain,
     )
