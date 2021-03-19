@@ -5,7 +5,12 @@
 
 Documentation https://flask-awscognito.readthedocs.io
 
+## Maintainer(s) Needed
+
+This project is in search for new maintainer(s). Please see [Issue #13](https://github.com/cgauge/Flask-AWSCognito/issues/13) for details.
+
 ## Example App
+
 ```python
 from flask import Flask, redirect, request, jsonify
 from flask_awscognito import AWSCognitoAuthentication
