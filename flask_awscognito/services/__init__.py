@@ -9,6 +9,7 @@ def cognito_service_factory(
     redirect_url,
     region,
     domain,
+    scope
 ):
     return CognitoService(
         user_pool_id,
@@ -17,8 +18,9 @@ def cognito_service_factory(
         redirect_url,
         region,
         domain,
+        scope
     )
 
 
-def token_service_factory(user_pool_id, user_pool_client_id, region):
-    return TokenService(user_pool_id, user_pool_client_id, region)
+def token_service_factory(user_pool_id, user_pool_client_id, region, _jwk_keys):
+    return TokenService(user_pool_id, user_pool_client_id, region, _jwk_keys=_jwk_keys)

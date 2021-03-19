@@ -14,7 +14,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="Flask-AWSCognito",
-    version="1.2",
+    version="1.4",
     url="https://github.com/cgauge/Flask-AWSCognito/",
     license="MIT",
     author="CustomerGauge",

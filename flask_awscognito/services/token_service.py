@@ -7,7 +7,14 @@ from flask_awscognito.exceptions import FlaskAWSCognitoError, TokenVerifyError
 
 
 class TokenService:
-    def __init__(self, user_pool_id, user_pool_client_id, region, request_client=None):
+    def __init__(
+        self,
+        user_pool_id,
+        user_pool_client_id,
+        region,
+        request_client=None,
+        _jwk_keys=None,
+    ):
         self.region = region
         if not self.region:
             raise FlaskAWSCognitoError("No AWS region provided")
@@ -18,13 +25,16 @@ class TokenService:
             self.request_client = requests.get
         else:
             self.request_client = request_client
-        self._load_jwk_keys()
+        if _jwk_keys:
+            self.jwk_keys = _jwk_keys
+        else:
+            self.jwk_keys = self._load_jwk_keys()
 
     def _load_jwk_keys(self):
         keys_url = f"https://cognito-idp.{self.region}.amazonaws.com/{self.user_pool_id}/.well-known/jwks.json"
         try:
             response = self.request_client(keys_url)
-            self.jwk_keys = response.json()["keys"]
+            return response.json()["keys"]
         except requests.exceptions.RequestException as e:
             raise FlaskAWSCognitoError(str(e)) from e
 
@@ -96,6 +106,6 @@ class TokenService:
 
         claims = self._extract_claims(token)
         self._check_expiration(claims, current_time)
-        self._check_audience(claims)
+        # self._check_audience(claims)
 
         self.claims = claims
